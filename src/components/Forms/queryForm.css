@@ -1,0 +1,11 @@
+.formWrap {
+  display: "flex";
+  align-items: "center";
+  justify-content: "center";
+  padding: 2em;
+}
+
+.button {
+  background-color: #6495ed;
+  cursor: pointer;
+}

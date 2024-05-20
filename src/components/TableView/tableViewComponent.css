@@ -1,0 +1,10 @@
+.tableRow {
+  border: 1px solid #ddd;
+}
+
+.tableHeader {
+  border-bottom: "solid 3px red";
+  background: "aliceblue";
+  color: "#000";
+  font-weight: "bold";
+}
