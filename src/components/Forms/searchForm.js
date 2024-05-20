@@ -28,9 +28,11 @@ const QueryForm = (props) => {
     }
 
     if (type === "country") {
-      filteredArr = originalList.filter(
-        (dt) => dt.name.toLowerCase() === val.toLowerCase()
-      );
+      filteredArr = originalList.filter((dt) => {
+        if (dt.name.toLowerCase().includes(val.toLowerCase())) {
+          return dt;
+        }
+      });
     }
 
     setFilterData([...filteredArr]);
