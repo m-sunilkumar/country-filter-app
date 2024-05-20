@@ -6,7 +6,7 @@ import { filterDropdowns } from "../../utils";
 import { GET_API_URL } from "../../utils";
 
 //css
-import "./queryForm.css";
+import "./searchForm.css";
 
 const QueryForm = (props) => {
   const { setFilterData } = props;
