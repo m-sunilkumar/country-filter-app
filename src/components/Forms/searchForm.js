@@ -1,6 +1,6 @@
 // src/HorizontalForm.js
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { filterDropdowns } from "../../utils";
 import { GET_API_URL } from "../../utils";

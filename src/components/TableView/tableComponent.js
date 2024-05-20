@@ -16,11 +16,6 @@ import "./tableComponent.css";
 const TableComponent = (props) => {
   const { tableData } = props;
   const headers = ["Country", "Code", "Ph Code", "Population", "Flag"];
-  const rows = [
-    { id: 1, name: "Alice", age: 25, city: "Wonderland" },
-    { id: 2, name: "Bob", age: 30, city: "Builderland" },
-    { id: 3, name: "Charlie", age: 35, city: "Chocolate Factory" },
-  ];
 
   return (
     <TableContainer component={Paper}>
