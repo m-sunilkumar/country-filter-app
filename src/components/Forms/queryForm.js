@@ -1,55 +1,64 @@
 // src/HorizontalForm.js
 
 import React, { useEffect, useState } from "react";
-import { filterDropdowns } from "../../utils";
 import axios from "axios";
+import { filterDropdowns } from "../../utils";
 import { GET_API_URL } from "../../utils";
 
 //css
 import "./queryForm.css";
-import TableViewComponent from "../TableView/tableViewComponent";
 
 const QueryForm = (props) => {
   const { setFilterData } = props;
   const [inputValue, setInputValue] = useState("");
   const [filterValue, setFilterValue] = useState("");
-  const [filteredList, setFilteredList] = useState([]);
+  const [originalList, setOriginalList] = useState([]);
   const [loader, setLoader] = useState(false);
 
+  //we can also implement debounce here to reduce function calls
   const getFilterValue = (val, type) => {
     let filteredArr = [];
-    const popValue = val.split("")[0] * 1000000;
+    const popValue = val.includes("1M")
+      ? 1000000
+      : val.includes("5M")
+      ? 5000000
+      : 10000000;
     if (type === "population") {
-      filteredArr = filteredList.filter((dt, i) => dt.population >= popValue);
-      setFilteredList([...filteredArr]);
+      filteredArr = originalList.filter((dt) => dt.population >= popValue);
     }
+
     if (type === "country") {
-      filteredArr = filteredList.filter(
-        (dt, i) => dt.name.toLowerCase() === val.toLowerCase()
+      filteredArr = originalList.filter(
+        (dt) => dt.name.toLowerCase() === val.toLowerCase()
       );
-      setFilteredList([...filteredArr]);
     }
+
     setFilterData([...filteredArr]);
   };
+
   const handleInputChange = (event) => {
+    event.preventDefault();
     setInputValue(event.target.value);
     getFilterValue(event.target.value, "country");
   };
 
   const handleFilterChange = (event) => {
     setFilterValue(event.target.value);
-    getFilterValue(event.target.value);
-  };
-  const clearFilter = () => {
-    setFilterData([...filteredList]);
+    getFilterValue(event.target.value, "population");
   };
 
-  //get all country list by calling api
+  const clearFilter = () => {
+    setFilterValue("");
+    setInputValue("");
+    setFilterData([...originalList]);
+  };
+
+  // Get all country list by calling API
   const getListData = () => {
     axios
       .get(GET_API_URL)
       .then((res) => {
-        setFilteredList([...res?.data]);
+        setOriginalList([...res.data]);
         setLoader(false);
         setFilterData([...res.data]);
       })
@@ -59,9 +68,6 @@ const QueryForm = (props) => {
       });
   };
 
-  //   useEffect(()=>{
-  //     setFilterData([...filteredList]);
-  //   })
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoader(true);
@@ -87,6 +93,9 @@ const QueryForm = (props) => {
             <option key={item + i}>{item}</option>
           ))}
         </select>
+        <span style={{ padding: "0 1em" }} onClick={clearFilter}>
+          Clear
+        </span>
         <button type="submit" className="button" onClick={handleSubmit}>
           Show All Countries
         </button>
